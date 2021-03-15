@@ -1,0 +1,42 @@
+﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.Collections.Generic;
+
+namespace Day07
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Part1();
+        }
+
+        public static IEnumerable<string> lines = File.ReadLines("test.txt");
+
+        static void Part1()
+        {
+            var st = new Stopwatch();
+            st.Start();
+
+            //var lines = File.ReadLines("test.txt");
+            var topBag = "shiny gold";
+
+            bagUp(topBag);
+
+        }
+
+        static string bagUp(string bagName)
+        {
+            Console.WriteLine(bagName);
+            foreach (var line in lines)
+            {
+                //Console.WriteLine(line);
+                if (line.Contains(bagName))
+                    Console.WriteLine(line.Split(bagName + " bag")[0].Split(" bag")[0]);
+            }
+            return "hello";
+        }
+
+    }
+}

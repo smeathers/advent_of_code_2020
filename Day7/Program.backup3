@@ -1,0 +1,73 @@
+﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Day07
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Part1();
+        }
+
+        //public static IEnumerable<string> lines = File.ReadLines("test.txt");
+        public static List<string> bags = new List<string>();
+
+        static void Part1()
+        {
+            var st = new Stopwatch();
+            st.Start();
+            string tagetBag = "shiny gold";
+            //Bag bag = new Bag();
+            //bag.name = "shiny gold";
+            bagUp(tagetBag);
+
+            Console.WriteLine(bags.Distinct().Count());
+        }
+
+        static void bagUp(string bag)
+        {
+            //Console.WriteLine(bag);
+            IEnumerable<string> lines = File.ReadLines("input.txt");
+            foreach (var line in lines)
+            {
+                //Console.WriteLine(line);
+                var bagName = line.Split(bag + " bag")[0].Split(" bag")[0];
+                if (line.Contains(bag) && bagName != "")
+                {
+                    bags.Add(bagName);
+                    bagUp(bagName);
+                }
+            }
+        }
+
+        //static void bagUp(Bag bag)
+        //{
+        //    Console.WriteLine(bag.name);
+        //    List<Bag> newBags = new List<Bag>();
+        //    foreach (var line in lines)
+        //    {
+        //        //Console.WriteLine(line);
+        //        var bagName = line.Split(bag.name + " bag")[0].Split(" bag")[0];
+        //        if (line.Contains(bag.name) && bagName != "")
+        //        {
+        //            Bag newBag = new Bag();
+        //            newBag.name = bagName;
+        //            newBags.Add(newBag);
+                    
+        //        }
+        //    }
+        //    bag.parents = newBags;
+        //}
+
+        //public class Bag
+        //{
+        //    public string name { get; set; }
+        //    public List<Bag> parents { get; set; }
+        //}
+
+    }
+}

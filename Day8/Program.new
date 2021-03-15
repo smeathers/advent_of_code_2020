@@ -1,0 +1,144 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+
+
+// https://adventofcode.com/2019/day/8
+// Part1 = 1446
+// Part2 = 
+
+namespace Day08
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Part2();
+        }
+
+        static IEnumerable<string> lines = File.ReadLines("input.txt");
+
+        static void Part1(IEnumerable<string> lines)
+        {
+            
+            var instructions = new List<int>();
+            int accumulator = 0;
+            int programCounter = 1;
+
+            //foreach (var instruction in lines)
+            for (int i = 0; i < lines.Count();)
+            {
+                string instruction = lines.ElementAt(i);
+                string operation = instruction.Split(" ")[0];
+                int argument = int.Parse(instruction.Split(" ")[1]);
+
+                Console.WriteLine(programCounter + "\t" + (i + 1) + "\t" + instruction + " acc=" + accumulator);
+
+                if (!instructions.Contains(i))
+                {
+                    
+                    instructions.Add(i);
+
+                    switch (operation)
+                    {
+                        case "acc":
+                            accumulator = accumulator + argument;
+                            i++;
+                            break;
+                        case "jmp":
+                            i = i + argument;
+                            break;
+                        case "nop":
+                            i++;
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("CRASH: acc:" + accumulator);
+                    Environment.Exit(0);
+                }
+                programCounter++;
+            }
+            Console.WriteLine("HALT: acc:" + accumulator);
+
+        }
+
+        class instruction
+        {
+            public int inst;
+            public string operation;
+            public int argument;
+        }
+
+
+        static void Part2()
+        {
+            var lines = File.ReadLines("input.txt");
+            var instructions = new List<instruction>();
+            var instructionsCount = new List<int>();
+            int accumulator = 0;
+            int programCounter = 1;
+
+            //foreach (var instruction in lines)
+            for (int i = 0; i < lines.Count();)
+            {
+                instruction inst = new instruction();
+                string instruction = lines.ElementAt(i);
+                inst.inst = i;
+                inst.operation = instruction.Split(" ")[0];
+                inst.argument = int.Parse(instruction.Split(" ")[1]);
+
+                Console.WriteLine((i + 1) + "\t" + instruction + " acc=" + accumulator);
+
+                if (!instructionsCount.Contains(i))
+                {
+
+                    instructionsCount.Add(i);
+                    instructions.Add(inst);
+
+                    switch (inst.operation)
+                    {
+                        case "acc":
+                            accumulator = accumulator + inst.argument;
+                            i++;
+                            break;
+                        case "jmp":
+                            i = i + inst.argument;
+                            break;
+                        case "nop":
+                            i++;
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("CRASH: acc:" + accumulator);
+                    //Environment.Exit(0);
+                    break;
+                }
+                programCounter++;
+            }
+
+            foreach (var instruction in instructions)
+            {
+                var localLines = lines;
+                switch (instruction.operation)
+                {
+                    case "acc":
+                        break;
+                    case "jmp":
+                        localLines. = localLines.ElementAt(instruction.inst).Replace("jmp", "nop");
+                        break;
+                    case "nop":
+                        localLines.ElementAt(instruction.inst) = localLines.ElementAt(instruction.inst).Replace("nop", "jmp");
+                        break;
+                }
+            }
+            //goal
+            Console.WriteLine("HALT: acc:" + accumulator);
+
+        }
+    }
+}
